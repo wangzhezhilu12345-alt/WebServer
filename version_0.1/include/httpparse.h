@@ -2,6 +2,9 @@
  * Copyright (C) 2019 CSGuide(https://csguide.cn)
  * Author: xiaobei (https://github.com/imarvinle)
  */
+
+ //写在前面的话：这个头文件意思是处理发过来的http请求，然后对http的请求做解析。
+
 #ifndef WEBSERVER_HTTPPARSE_H
 #define WEBSERVER_HTTPPARSE_H
 
@@ -22,9 +25,9 @@ std::ostream &operator<<(std::ostream &, const HttpRequest &);
 
 class HttpRequestParser {
 public:
-  enum LINE_STATE { LINE_OK = 0, LINE_BAD, LINE_MORE };
-  enum PARSE_STATE { PARSE_REQUESTLINE = 0, PARSE_HEADER, PARSE_BODY };
-  enum HTTP_CODE { NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION };
+  enum LINE_STATE { LINE_OK = 0, LINE_BAD, LINE_MORE };         //请求状态
+  enum PARSE_STATE { PARSE_REQUESTLINE = 0, PARSE_HEADER, PARSE_BODY }; //解析状态
+  enum HTTP_CODE { NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION }; //根据状态设定的http状态
 
   static LINE_STATE parse_line(char *buffer, int &checked_index, int &read_index);
   static HTTP_CODE parse_requestline(char *line, PARSE_STATE &parse_state, HttpRequest &request);
@@ -50,14 +53,19 @@ struct HttpRequest {
     Upgrade_Insecure_Requests
   };
   struct EnumClassHash {
+
+    //这个模板函数 QUESTION:1
     template <typename T>
     std::size_t operator()(T t) const {
       return static_cast<std::size_t>(t);
     }
   };
 
+
+  //这是对收到的报文做序列化的map?
   static std::unordered_map<std::string, HTTP_HEADER> header_map;
 
+  
   HttpRequest(std::string url = std::string(""), HTTP_METHOD method = METHOD_NOT_SUPPORT,
               HTTP_VERSION version = VERSION_NOT_SUPPORT)
       : mMethod(method),
@@ -69,7 +77,7 @@ struct HttpRequest {
   HTTP_METHOD mMethod;
   HTTP_VERSION mVersion;
   std::string mUri;
-  char *mContent;
+  char *mContent; 
   std::unordered_map<HTTP_HEADER, std::string, EnumClassHash> mHeaders;
 };
 

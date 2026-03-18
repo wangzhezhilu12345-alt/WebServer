@@ -57,13 +57,13 @@ public:
   }
 
 private:
-  HttpStatusCode mStatusCode;
-  HttpRequest::HTTP_VERSION mVersion;
-  std::string mStatusMsg;
-  bool mCloseConnection;
-  MimeType mMime;
-  const char *mBody;
-  int mContentLength;
+  HttpStatusCode mStatusCode;         //这个是https的状态码
+  HttpRequest::HTTP_VERSION mVersion; 
+  std::string mStatusMsg;           //信息的状态码？
+  bool mCloseConnection;            //关闭链接
+  MimeType mMime;     
+  const char *mBody;                //主体吗
+  int mContentLength;               /
   std::string mFilePath;
   std::unordered_map<std::string, std::string> mHeaders;
 };
