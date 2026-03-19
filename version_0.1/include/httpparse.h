@@ -25,6 +25,7 @@ std::ostream &operator<<(std::ostream &, const HttpRequest &);
 
 class HttpRequestParser {
 public:
+  //这是一个简单的状态机思想
   enum LINE_STATE { LINE_OK = 0, LINE_BAD, LINE_MORE };         //请求状态
   enum PARSE_STATE { PARSE_REQUESTLINE = 0, PARSE_HEADER, PARSE_BODY }; //解析状态
   enum HTTP_CODE { NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION }; //根据状态设定的http状态
@@ -54,18 +55,16 @@ struct HttpRequest {
   };
   struct EnumClassHash {
 
-    //这个模板函数 QUESTION:1
+    //这个模板函数??
     template <typename T>
     std::size_t operator()(T t) const {
       return static_cast<std::size_t>(t);
     }
   };
 
-
-  //这是对收到的报文做序列化的map?
+  //这是对收到的报文做反序列化的map?
   static std::unordered_map<std::string, HTTP_HEADER> header_map;
 
-  
   HttpRequest(std::string url = std::string(""), HTTP_METHOD method = METHOD_NOT_SUPPORT,
               HTTP_VERSION version = VERSION_NOT_SUPPORT)
       : mMethod(method),

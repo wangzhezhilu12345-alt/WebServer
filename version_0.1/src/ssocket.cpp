@@ -25,6 +25,8 @@ nsocket::ServerSocket::ServerSocket(int port, const char *ip) : mPort(port), mIp
               << "at " << __LINE__ << std::endl;
     exit(0);
   }
+
+  //多路IO
   setReusePort(fd);
 }
 
