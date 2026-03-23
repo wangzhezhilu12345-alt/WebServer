@@ -26,15 +26,20 @@ std::ostream &operator<<(std::ostream &, const HttpRequest &);
 class HttpRequestParser {
 public:
 
-  //主状态机两个情况，一个正在分析请求行，一个正在分析头部字段
+  
 
   //这是一个简单的状态机思想
-  enum LINE_STATE { LINE_OK = 0, LINE_BAD, LINE_MORE };    //行的读取状态：一个完整的 行出错 行读取不完整
+  enum LINE_STATE { LINE_OK = 0, LINE_BAD, LINE_MORE };    //行的读取状态：一个完整的 行出错 行读取不完整，本质是为了解决粘包问题
   enum PARSE_STATE { PARSE_REQUESTLINE = 0, PARSE_HEADER, PARSE_BODY }; //解析状态
   enum HTTP_CODE { NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION }; 
-                  //服务器解析HTTP请求的结果
+  //服务器解析HTTP请求的结果
 
-  static LINE_STATE parse_line(char *buffer, int &checked_index, int &read_index);//从状态机解析出一行内容
+
+  //请求行
+  //头部
+  //空行(一定要有)
+  //消息体(body)
+  static LINE_STATE parse_line(char *buffer, int &checked_index, int &read_index);//???这是什么
   static HTTP_CODE parse_requestline(char *line, PARSE_STATE &parse_state, HttpRequest &request);//分析请求行
   static HTTP_CODE parse_headers(char *line, PARSE_STATE &parse_state, HttpRequest &request);//分析头部字段
   static HTTP_CODE parse_body(char *body, HttpRequest &request);
@@ -66,7 +71,7 @@ struct HttpRequest {
     }
   };
 
-  //这是对不定长报头做处理的map
+  //这是干什么的？反序列化用的么？
   static std::unordered_map<std::string, HTTP_HEADER> header_map;
 
   HttpRequest(std::string url = std::string(""), HTTP_METHOD method = METHOD_NOT_SUPPORT,
