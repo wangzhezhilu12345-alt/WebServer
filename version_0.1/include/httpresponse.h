@@ -63,7 +63,7 @@ private:
   bool mCloseConnection;            //关闭链接
   MimeType mMime;     
   const char *mBody;                //主体吗
-  int mContentLength;               /
+  int mContentLength;               
   std::string mFilePath;
   std::unordered_map<std::string, std::string> mHeaders;
 };
