@@ -53,10 +53,10 @@ http::HttpRequestParser::HTTP_CODE http::HttpRequestParser::parse_requestline(ch
     return BAD_REQUEST;
   }
 
-  // 分割 method 和 url
+  // 分割 method 和 url 变成xxx\0 xxxx
   *url++ = '\0';
 
-  char *method = line;
+  char *method = line;//这个就是
 
   if (strcasecmp(method, "GET") == 0) {
     request.mMethod = HttpRequest::GET;
@@ -68,12 +68,12 @@ http::HttpRequestParser::HTTP_CODE http::HttpRequestParser::parse_requestline(ch
     return BAD_REQUEST;
   }
 
-  url += strspn(url, " \t");
+  url += strspn(url, " \t"); 
   char *version = strpbrk(url, " \t");
   if (!version) {
     return BAD_REQUEST;
   }
-  *version++ = '\0';
+  *version++ = '\0';//method\0 url\0 version\0 这个是自带的
   version += strspn(version, " \t");
 
   // HTTP/1.1 后面可能还存在空白字符
